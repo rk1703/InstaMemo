@@ -58,3 +58,5 @@ Technologies used in the project:
 *   Prisma
 *   Tailwind CSS
 *   shadcn UI
+
+<h2 align="center">Made with💖by RK</h2>  
