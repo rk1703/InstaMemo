@@ -3,8 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/Navbar";
-import prisma from "./lib/db";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import prisma from "@/app/lib/db";
+import { Toaster } from "@/components/ui/sonner"
+import { auth } from "@/auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,18 +15,17 @@ export const metadata: Metadata = {
 };
 
 async function getdata(userid: string) {
-  if(userid){
-  const data = await prisma.user.findUnique({
-    where: {
-      id: userid,
-    },
-    select: {
-      colorScheme: true,
-    },
-  });
-  return data;
-}
-
+  if (userid) {
+    const data = await prisma.user.findUnique({
+      where: {
+        id: userid,
+      },
+      select: {
+        colorScheme: true,
+      },
+    });
+    return data;
+  }
 }
 
 export default async function RootLayout({
@@ -33,13 +33,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
+  const session = await auth();
+  const user = session?.user;
   const data = await getdata(user?.id as string);
-
   return (
-    <html lang="en">
-      <body className={`${inter.className} ${data?.colorScheme ?? 'theme-orange'}`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} ${data?.colorScheme ?? 'theme-rose'}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -47,6 +46,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         > <Navbar />
           {children}
+          <Toaster position="top-right" richColors/>
         </ThemeProvider></body>
     </html>
   );

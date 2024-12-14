@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { ThemeToggle } from "./themeToogle";
 import { Button } from "./ui/button";
-import { RegisterLink, LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { UserNav } from "./UserNav";
-
+import { auth } from "@/auth";
+export const dynamic = 'force-dynamic'
 export async function Navbar() {
-    const { isAuthenticated, getUser } = getKindeServerSession();
-    const user = await getUser();
+    const session = await auth();
+    const user = session?.user;
     return (
         <nav className="border-b bg-background h-[10vh] flex items-center">
             <div className="container flex items-center justify-between">
@@ -17,18 +16,18 @@ export async function Navbar() {
 
                 <div className="flex items-center gap-x-5">
                     <ThemeToggle />
-                    {(await isAuthenticated()) ? (
+                    {(session?.user) ? (
                         <>
-                            <UserNav first_name={user?.given_name as string} last_name={user?.family_name as string} email={user?.email as string} profile_pic={user?.picture as string} />
+                            <UserNav name={user?.name as string} email={user?.email as string} profile_pic={user?.image as string} />
                         </>
                     ) : (
                         <div className="flex items-center gap-x-5">
-                            <LoginLink>
+                            <Link href="/signin">
                                 <Button>Sign In</Button>
-                            </LoginLink>
-                            <RegisterLink className="hidden md:inline-flex">
-                                <Button variant="secondary">Sign Up</Button>
-                            </RegisterLink>
+                            </Link>
+                            <Link href="/signup" className="hidden md:inline-flex">
+                                <Button>Sign Up</Button>
+                            </Link>
                         </div>
                     )}
 

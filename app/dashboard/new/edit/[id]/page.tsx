@@ -1,4 +1,4 @@
-import { SubmitButton } from "@/components/SubmitButton";
+import { SubmitButtonSave } from "@/components/SubmitButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -6,9 +6,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import prisma from "@/app/lib/db";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
+
+type Params = Promise<{ id: string }>
 
 async function getData({ userId, noteId }: { userId: string, noteId: string }) {
     const data = await prisma.note.findUnique({
@@ -26,10 +28,14 @@ async function getData({ userId, noteId }: { userId: string, noteId: string }) {
     return data;
 }
 
-export default async function DynamicRoute({ params }: { params: { id: string } }) {
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
-    const data = await getData({ userId: user?.id as string, noteId: params?.id as string });
+export default async function DynamicRoute(props: {
+    params: Params
+}) {
+    const params = await props.params
+    const id = params.id
+    const session = await auth();
+    const user = session?.user;
+    const data = await getData({ userId: user?.id as string, noteId: id as string });
 
     async function postData(formData: FormData) {
         "use server"
@@ -71,7 +77,7 @@ export default async function DynamicRoute({ params }: { params: { id: string } 
                     <Button asChild variant="destructive">
                         <Link href="/dashboard">Cancel</Link>
                     </Button>
-                    <SubmitButton />
+                    <SubmitButtonSave />
                 </CardFooter>
             </form>
         </Card>

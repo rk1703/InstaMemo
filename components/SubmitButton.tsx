@@ -2,9 +2,9 @@
 
 import { useFormStatus } from "react-dom"
 import { Button } from "./ui/button"
-import { Loader2, Trash } from "lucide-react"
+import { Loader2, Trash, Loader } from "lucide-react"
 
-export function SubmitButton() {
+export function SubmitButtonSave() {
     const { pending } = useFormStatus()
     return (
         <>
@@ -34,5 +34,19 @@ export function TrashButton() {
                 </Button>
             )}
         </>
+    )
+}
+
+export function SubmitButton({ name }: { name: string }) {
+    const { pending } = useFormStatus();
+    return (
+        <Button
+            type="submit"
+            disabled={pending}
+            className="w-full"
+        >
+            
+            {pending ? <><Loader className="animate-spin h-5 w-5"/> Signing In...</> : <>{name}</>}
+        </Button>
     )
 }

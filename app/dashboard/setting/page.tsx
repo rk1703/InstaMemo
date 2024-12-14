@@ -3,9 +3,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import prisma from "@/app/lib/db";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { SubmitButton } from "@/components/SubmitButton";
+import { SubmitButtonSave } from "@/components/SubmitButton";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 
 async function getuser(userid: string) {
     if (userid) {
@@ -26,9 +26,8 @@ async function getuser(userid: string) {
 }
 
 export default async function SettingPage() {
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
-
+    const session = await auth();
+    const user = session?.user;
     const userData = await getuser(user?.id as string);
 
     async function updateData(formData: FormData) {
@@ -98,7 +97,7 @@ export default async function SettingPage() {
                         </div>
                     </CardContent>
                     <CardFooter>
-                        <SubmitButton />
+                        <SubmitButtonSave />
                     </CardFooter>
                 </form>
             </Card>

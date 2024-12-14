@@ -1,17 +1,17 @@
-import { SubmitButton } from "@/components/SubmitButton";
+import { SubmitButtonSave } from "@/components/SubmitButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import prisma from "@/app/lib/db";
+import { auth } from "@/auth";
 
 export default async function CreateNote() {
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
+    const session = await auth();
+    const user = session?.user;
     async function postData(formData: FormData) {
         "use server"
         const title = formData.get('title') as string;
@@ -52,7 +52,7 @@ export default async function CreateNote() {
                     <Button asChild variant="destructive">
                         <Link href="/dashboard">Cancel</Link>
                     </Button>
-                    <SubmitButton />
+                    <SubmitButtonSave />
                 </CardFooter>
             </form>
         </Card>

@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import prisma from "../lib/db";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Edit, File, Menu, MoreVertical } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { revalidatePath } from "next/cache";
 import { TrashButton } from "@/components/SubmitButton";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { auth } from "@/auth";
 
 async function getData(userId: string) {
     const data = await prisma.note.findMany({
@@ -23,8 +23,8 @@ async function getData(userId: string) {
 
 export default async function DashboardPage() {
 
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
+    const session = await auth();
+    const user = session?.user;
     const data = await getData(user?.id as string);
 
     async function deleteNote(formData: FormData) {

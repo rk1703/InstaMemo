@@ -8,74 +8,23 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  // directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id               String  @id @unique
+  id               String    @id @default(cuid())
   name             String?
-  email            String  @unique
-  stripeCustomerId String? @unique
-  colorScheme      String  @default("theme-orange")
+  email            String    @unique
+  stripeCustomerId String?   @unique
+  colorScheme      String    @default("theme-rose")
+  emailVerified    DateTime?
+  image            String?
   Notes            Note[]
-}
+  accounts         Account[]
+  sessions         Session[]
 
-model Student {
-  Id                    Int      @id @unique
-  ScholarNo             String   @unique
-  EnrollmentNo          String?
-  StudentName           String?
-  ExamMonth             String?
-  ExamYear              String?
-  AcademicYear          String?
-  ExamType              String?
-  Degree                String?
-  Specialization        String?
-  Department            String?
-  Semester              String?
-  ObtainGrandTotal      String?
-  MaxGrandTotal         String?
-  Percentage            String?
-  Result                String?
-  SGPA                  String?
-  CGPA                  String?
-  CCGPA                 String?
-  IsCompile             Boolean?
-  IsLock                Boolean?
-  IsDeanLock            Boolean?
-  IsPublish             Boolean?
-  PublishDate           String?
-  CreateDate            String?
-  CreatedBy             Int?
-  ModifyDate            String?
-  ModifyBy              Int?
-  Status                String?
-  Remark                String?
-  ResultCategory        String?
-  SecurityCode          String?
-  PrintDate             String?
-  ModifyPrintDate       String?
-  PassingCriteria       String?
-  MarksheetNo           String?
-  YearlyResult          String?
-  Scheme                String?
-  FirstYearSection      String?
-  IsMinorSpecialization Boolean?
-  MinorObtainGrandTotal String?
-  MinorMaxGrandTotal    String?
-  MinorSGPA             String?
-  MinorCGPA             String?
-  MinorCCGPA            String?
-  MinorResult           String?
-  MinorYearlyResult     String?
-  MinorIsLock           Boolean?
-  MinorIsDeanLock       Boolean?
-  AdnObtainGrandTotal   String?
-  AdnMaxGrandTotal      String?
-  AdnSGPA               String?
-  AdnCGPA               String?
-  AdnResult             String?
-  AdnYearlyResult       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Note {
@@ -88,4 +37,44 @@ model Note {
 
   User   User?   @relation(fields: [userId], references: [id])
   userId String?
+}
+
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
 }

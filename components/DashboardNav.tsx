@@ -1,10 +1,12 @@
 "use client"
 
 import { cn } from "@/lib/utils";
-import { CreditCard, Home, Settings } from "lucide-react";
+import { DoorClosed} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navItems } from "./UserNav";
+import { handleSignOut } from "@/actions/auth";
+import { Button } from "./ui/button";
 
 export function DashboardNav() {
     const pathname = usePathname();
@@ -21,6 +23,12 @@ export function DashboardNav() {
                     </span>
                 </Link>
             ))}
+            <form action={handleSignOut}>
+                        <Button type="submit" variant={"destructive"} className="w-full justify-start px-3 py-2" size={"lg"}>
+                            <span><DoorClosed className="h-4 w-4" /></span>
+                            Logout
+                        </Button>
+                    </form>
         </nav>
     )
 }

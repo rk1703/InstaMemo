@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import Link from "next/link";
 
 export default async function Home() {
-  const { isAuthenticated } = getKindeServerSession();
-  if(await isAuthenticated()){
+  const session = await auth();
+  if(session?.user){
     return redirect('/dashboard')
   }
   return (
@@ -22,9 +22,9 @@ export default async function Home() {
             <p className="max-w-xl mx-auto mt-8 text-base lg:text-xl text-secondary-foreground">Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse fuga, iure perspiciatis libero repellendus exercitationem officiis non quo quod rerum.</p>
           </div>
           <div className="flex max-w-sm justify-center mx-auto mt-10">
-            <RegisterLink>
+            <Link href="/signup">
               <Button size="lg" className="w-full">Sign Up for free</Button>
-            </RegisterLink>
+            </Link>
           </div>
         </div>
       </div>
