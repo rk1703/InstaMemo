@@ -9,6 +9,7 @@ import { sendVerificationRequest } from "./lib/sendVerificationsMail";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  secret: process.env.NEXT_PUBLIC_SECRET,
   providers: [
     Google,
     GitHub,
