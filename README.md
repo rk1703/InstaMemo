@@ -8,15 +8,15 @@
 
 <h2>Project Screenshots:</h2>
 
-<img src="https://i.postimg.cc/7LDWr4W4/main-dark.png" alt="project-screenshot" width="2000" height="500/">
+<img src="https://i.postimg.cc/7LDWr4W4/main-dark.png" alt="project-screenshot">
 
-<img src="https://i.postimg.cc/nLkwHWyD/main-light.png" alt="project-screenshot" width="2000" height="500/">
+<img src="https://i.postimg.cc/nLkwHWyD/main-light.png" alt="project-screenshot">
 
-<img src="https://i.postimg.cc/9MQgzp2N/de-light.png" alt="project-screenshot" width="2000" height="500/">
+<img src="https://i.postimg.cc/9MQgzp2N/de-light.png" alt="project-screenshot">
 
-<img src="https://i.postimg.cc/hvJC1tfL/add-light.png" alt="project-screenshot" width="2000" height="500/">
+<img src="https://i.postimg.cc/hvJC1tfL/add-light.png" alt="project-screenshot">
 
-<img src="https://i.postimg.cc/HsyZJjGH/df-light.png" alt="project-screenshot" width="2000" height="500/">
+<img src="https://i.postimg.cc/HsyZJjGH/df-light.png" alt="project-screenshot">
 
   
   
