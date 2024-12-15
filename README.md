@@ -54,7 +54,7 @@ Technologies used in the project:
 *   Next.js
 *   Supabase
 *   TypeScript
-*   Kinde Auth
+*   Auth.js
 *   Prisma
 *   Tailwind CSS
 *   shadcn UI
